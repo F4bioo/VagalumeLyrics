@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Vagalume Lyrics</string>
+
+    <string name="text_artist">Artist</string>
+    <string name="text_lyric">Lyric</string>
+    <string name="text_search">Search for lyrics</string>
+
+    <string name="tools_lyric">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nullam ut purus condimentum nunc varius porttitor at ut lacus. Sed nec luctus erat,
+        sit amet fringilla orci. Fusce sed sapien vel quam auctor convallis vitae vel turpis.
+        Nulla vitae iaculis leo. Nunc ornare ipsum quis pretium vulputate. Donec ut dui ante.
+        Proin viverra odio tellus, ut condimentum mauris lobortis consequat. Nulla ut orci
+        faucibus, auctor augue et, pharetra sapien. Pellentesque id diam consequat, efficitur
+        arcu nec, dictum nunc. Nam turpis mi, volutpat ut risus eget, molestie suscipit est.
+        Nam pharetra turpis et pharetra ultricies.</string>
+
+    <string name="text_not_found">Lyric not found!</string>
+    <string name="text_loading_image">Loading image…</string>
+    <string name="text_connection">No internet connection!</string>
 </resources>
