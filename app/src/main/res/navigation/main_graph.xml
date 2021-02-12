@@ -9,18 +9,34 @@
         android:id="@+id/mainFragment"
         android:name="fbo.costa.vagalumelyrics.ui.main.MainFragment"
         android:label="@string/text_search"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment">
+
+        <action
+            android:id="@+id/action_mainFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/lyricFragment"
         android:name="fbo.costa.vagalumelyrics.ui.lyric.LyricFragment"
         android:label=""
-        tools:layout="@layout/lyric_fragment" />
+        tools:layout="@layout/lyric_fragment">
+        <argument
+            android:name="searchArgs"
+            android:defaultValue="@null"
+            app:argType="fbo.costa.vagalumelyrics.model.Search"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
         android:name="fbo.costa.vagalumelyrics.ui.search.SearchFragment"
         android:label=""
-        tools:layout="@layout/search_fragment" />
+        tools:layout="@layout/search_fragment">
+
+        <action
+            android:id="@+id/action_searchFragment_to_lyricFragment"
+            app:destination="@id/lyricFragment" />
+    </fragment>
 
 </navigation>
