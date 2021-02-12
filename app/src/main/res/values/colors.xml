@@ -10,4 +10,8 @@
 
     <color name="background">#F5F5F5</color>
     <color name="color_empty">#33000000</color>
+
+    <color name="primary_500">#009688</color>
+    <color name="accent_500">#FFC107</color>
+    <color name="accent_700">#FFA000</color>
 </resources>

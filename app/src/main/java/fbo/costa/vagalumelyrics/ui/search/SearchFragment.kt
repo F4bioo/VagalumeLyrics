@@ -9,6 +9,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fbo.costa.vagalumelyrics.R
 import fbo.costa.vagalumelyrics.databinding.SearchFragmentBinding
@@ -31,6 +33,7 @@ class SearchFragment : Fragment(),
     private var searchView: SearchView? = null
     private val binding get() = _binding!!
     private var collapse: Boolean = false
+    private var withGrid: Boolean = true
 
     @Inject
     lateinit var cnnLiveData: NetworkLiveData
@@ -42,17 +45,19 @@ class SearchFragment : Fragment(),
         private const val CHILD_VIEW_OFFLINE = 3
     }
 
+    private val gridLayout by lazy { gridLayout() }
+    private val listLayout by lazy { listLayout() }
     private val lyricAdapter by lazy {
         LyricAdapter { _search ->
             val directions = SearchFragmentDirections
                 .actionSearchFragmentToLyricFragment(_search)
             if (cnnLiveData.isOnline()) {
                 // Send data to Other Fragment
-                //findNavController().navigate(directions) // No animation
                 findNavController().navigateWithAnimations(directions)
+
             } else Toast.makeText(
                 requireContext(),
-                getString(R.string.text_connection),
+                getString(R.string.text_no_connection),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -90,9 +95,9 @@ class SearchFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
         setHasOptionsMenu(true)
-
         observeNetwork()
         observeAdapterViewModelEvents()
+        setListeners()
         iniRecycler()
     }
 
@@ -108,7 +113,7 @@ class SearchFragment : Fragment(),
     override fun getChild(p0: Int) = when (p0 > 0) {
         true -> CHILD_VIEW_NOTHING
         else -> {
-            binding.includeState.empty.text = getString(R.string.text_not_found)
+            binding.includeState.empty.text = getString(R.string.text_lyric_not_found)
             CHILD_VIEW_EMPTY
         }
     }
@@ -147,9 +152,29 @@ class SearchFragment : Fragment(),
         }
     }
 
+    private fun setListeners() {
+        binding.fab.setOnClickListener {
+            withGrid = !withGrid
+            iniRecycler()
+            lyricAdapter.setBinding(withGrid)
+        }
+    }
+
     private fun iniRecycler() {
+        binding.recyclerSearch.layoutManager =
+            if (withGrid) gridLayout else listLayout
         binding.recyclerSearch.adapter = lyricAdapter
     }
+
+    private fun gridLayout() = StaggeredGridLayoutManager(
+        2,
+        StaggeredGridLayoutManager.VERTICAL
+    )
+
+    private fun listLayout() = LinearLayoutManager(
+        requireContext(),
+        LinearLayoutManager.VERTICAL, false
+    )
 
     private fun setSearchView() {
         searchView?.setIconifiedByDefault(false)

@@ -50,9 +50,10 @@ class LyricFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         observeLyricViewModelEvents()
         observeImageViewModelEvents()
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        setListeners()
 
         // Get data from Other Fragment
         args.searchArgs?.lyricId?.let { _lyricId ->
@@ -66,7 +67,7 @@ class LyricFragment : Fragment(),
             CHILD_VIEW_NOTHING
         }
         else -> {
-            binding.includeState.empty.text = getString(R.string.text_not_found)
+            binding.includeState.empty.text = getString(R.string.text_lyric_not_found)
             CHILD_VIEW_EMPTY
         }
     }
@@ -76,11 +77,7 @@ class LyricFragment : Fragment(),
             when (_dataState) {
                 is DataState.Success -> {
                     val lyric = _dataState.data
-                    binding.textLyric.text = lyric.originalLyric
-                    binding.toolbarLyric.title = lyric.artistName
-                    binding.progress.isVisible = true
-                    binding.includeState.root
-                        .displayedChild = getChild(lyric)
+                    success(lyric)
                 }
                 is DataState.Loading -> {
                     binding.includeState.root
@@ -110,6 +107,24 @@ class LyricFragment : Fragment(),
                     binding.progress.isVisible = false
                 }
             }
+        }
+    }
+
+    private fun setListeners() {
+        binding.fab.setOnClickListener {
+            binding.flipperLyric.showNext()
+        }
+    }
+
+    private fun success(lyric: Lyric?) {
+        binding.apply {
+            textOriginalLyric.text = lyric?.originalLyric
+            textTranslatedLyric.text = lyric?.translatedLyric
+                ?: getString(R.string.text_translation_not_found)
+            toolbarLyric.title = lyric?.artistName
+            progress.isVisible = true
+            includeState.root
+                .displayedChild = getChild(lyric)
         }
     }
 

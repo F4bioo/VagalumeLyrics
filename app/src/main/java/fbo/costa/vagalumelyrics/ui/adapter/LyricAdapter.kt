@@ -1,13 +1,16 @@
 package fbo.costa.vagalumelyrics.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fbo.costa.vagalumelyrics.R
-import fbo.costa.vagalumelyrics.databinding.ItemAdapterBinding
+import fbo.costa.vagalumelyrics.databinding.ItemGridAdapterBinding
+import fbo.costa.vagalumelyrics.databinding.ItemListAdapterBinding
 import fbo.costa.vagalumelyrics.model.Search
 import fbo.costa.vagalumelyrics.util.DiffCallBack
 
@@ -16,12 +19,11 @@ class LyricAdapter(
 ) : RecyclerView.Adapter<LyricAdapter.ViewHolder>() {
 
     private val lyricList = arrayListOf<Search>()
+    private var withGrid = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val biding = ItemAdapterBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-        return ViewHolder(biding, onClickListener)
+        val biding = if (withGrid) itemGrid(parent) else itemList(parent)
+        return ViewHolder(biding.root, onClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -34,16 +36,18 @@ class LyricAdapter(
     }
 
     inner class ViewHolder(
-        private val biding: ItemAdapterBinding,
+        itemView: View,
         private val onClickListener: (search: Search) -> Unit
-    ) : RecyclerView.ViewHolder(biding.root) {
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        private val imageArtist = itemView.findViewById<ImageView>(R.id.image_artist)
+        private val textTitle = itemView.findViewById<TextView>(R.id.text_title)
+        private val textArtist = itemView.findViewById<TextView>(R.id.text_artist)
 
         fun viewBind(search: Search) {
-            biding.apply {
-                imageItem.loadImage(search.imageUrl)
-                textTitle.text = search.title
-                textArtist.text = search.band
-            }
+            imageArtist.loadImage(search.imageUrl)
+            textTitle.text = search.title
+            textArtist.text = search.band
 
             itemView.setOnClickListener {
                 onClickListener(search)
@@ -62,6 +66,10 @@ class LyricAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun setBinding(withGrid: Boolean) {
+        this.withGrid = withGrid
+    }
+
     private fun ImageView.loadImage(imageUrl: String?) {
         Glide.with(this)
             .load(imageUrl)
@@ -70,4 +78,14 @@ class LyricAdapter(
             .centerCrop()
             .into(this)
     }
+
+    private fun itemGrid(parent: ViewGroup) =
+        ItemGridAdapterBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+
+    private fun itemList(parent: ViewGroup) =
+        ItemListAdapterBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
 }

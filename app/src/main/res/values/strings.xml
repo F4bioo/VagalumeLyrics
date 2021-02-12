@@ -14,7 +14,10 @@
         arcu nec, dictum nunc. Nam turpis mi, volutpat ut risus eget, molestie suscipit est.
         Nam pharetra turpis et pharetra ultricies.</string>
 
-    <string name="text_not_found">Lyric not found!</string>
+    <string name="text_lyric_not_found">Lyric not found!</string>
+    <string name="text_translation_not_found">Translation not found!</string>
     <string name="text_loading_image">Loading image…</string>
-    <string name="text_connection">No internet connection!</string>
+    <string name="text_no_connection">No internet connection!</string>
+    <string name="text_translation">Translation</string>
+    <string name="text_change_layout">Change layout</string>
 </resources>
