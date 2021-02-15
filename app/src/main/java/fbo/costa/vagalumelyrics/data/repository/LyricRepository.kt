@@ -1,5 +1,6 @@
-package fbo.costa.vagalumelyrics.data
+package fbo.costa.vagalumelyrics.data.repository
 
+import fbo.costa.vagalumelyrics.data.ApiService
 import fbo.costa.vagalumelyrics.model.Lyric
 import fbo.costa.vagalumelyrics.model.lyric.LyricEntity
 import fbo.costa.vagalumelyrics.model.lyric.source.MusicSource

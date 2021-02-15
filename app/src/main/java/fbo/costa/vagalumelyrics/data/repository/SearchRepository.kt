@@ -1,6 +1,7 @@
-package fbo.costa.vagalumelyrics.data
+package fbo.costa.vagalumelyrics.data.repository
 
 import fbo.costa.vagalumelyrics.BuildConfig
+import fbo.costa.vagalumelyrics.data.ApiService
 import fbo.costa.vagalumelyrics.model.Search
 import fbo.costa.vagalumelyrics.model.search.SearchEntity
 import fbo.costa.vagalumelyrics.model.search.source.DocSource

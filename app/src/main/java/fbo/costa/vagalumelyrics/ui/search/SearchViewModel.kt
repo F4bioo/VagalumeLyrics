@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fbo.costa.vagalumelyrics.data.SearchRepository
+import fbo.costa.vagalumelyrics.data.repository.SearchRepository
 import fbo.costa.vagalumelyrics.model.Search
 import fbo.costa.vagalumelyrics.util.state.DataState
 import fbo.costa.vagalumelyrics.util.state.SearchStateEvent

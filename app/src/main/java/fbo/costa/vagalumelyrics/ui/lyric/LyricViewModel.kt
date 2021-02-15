@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fbo.costa.vagalumelyrics.data.ImageRepository
-import fbo.costa.vagalumelyrics.data.LyricRepository
+import fbo.costa.vagalumelyrics.data.repository.ImageRepository
+import fbo.costa.vagalumelyrics.data.repository.LyricRepository
 import fbo.costa.vagalumelyrics.model.Image
 import fbo.costa.vagalumelyrics.model.Lyric
 import fbo.costa.vagalumelyrics.util.state.DataState

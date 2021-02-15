@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -17,11 +18,12 @@ import fbo.costa.vagalumelyrics.databinding.SearchFragmentBinding
 import fbo.costa.vagalumelyrics.extension.navigateWithAnimations
 import fbo.costa.vagalumelyrics.ui.adapter.LyricAdapter
 import fbo.costa.vagalumelyrics.util.Interface_Impl
-import fbo.costa.vagalumelyrics.util.NetworkLiveData
 import fbo.costa.vagalumelyrics.util.UtilQueryTextListener
+import fbo.costa.vagalumelyrics.util.network.NetworkListener
 import fbo.costa.vagalumelyrics.util.state.DataState
 import fbo.costa.vagalumelyrics.util.state.SearchStateEvent
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(),
@@ -34,9 +36,7 @@ class SearchFragment : Fragment(),
     private val binding get() = _binding!!
     private var collapse: Boolean = false
     private var withGrid: Boolean = true
-
-    @Inject
-    lateinit var cnnLiveData: NetworkLiveData
+    private var hasInternet: Boolean = true
 
     companion object {
         private const val CHILD_VIEW_NOTHING = 0
@@ -45,13 +45,14 @@ class SearchFragment : Fragment(),
         private const val CHILD_VIEW_OFFLINE = 3
     }
 
+    private val networkListener by lazy { NetworkListener() }
     private val gridLayout by lazy { gridLayout() }
     private val listLayout by lazy { listLayout() }
     private val lyricAdapter by lazy {
         LyricAdapter { _search ->
             val directions = SearchFragmentDirections
                 .actionSearchFragmentToLyricFragment(_search)
-            if (cnnLiveData.isOnline()) {
+            if (hasInternet) {
                 // Send data to Other Fragment
                 findNavController().navigateWithAnimations(directions)
 
@@ -79,11 +80,6 @@ class SearchFragment : Fragment(),
             binding.root.removeView(binding.root)
         }
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkNetwork(cnnLiveData.isOnline())
     }
 
     override fun onDestroy() {
@@ -125,8 +121,11 @@ class SearchFragment : Fragment(),
     }
 
     private fun observeNetwork() {
-        cnnLiveData.observe(viewLifecycleOwner) { _isOnline ->
-            checkNetwork(_isOnline)
+        lifecycleScope.launch {
+            networkListener.checkNetworkAvailability(requireContext()).collect { _status ->
+                hasInternet = _status
+                checkNetwork(hasInternet)
+            }
         }
     }
 

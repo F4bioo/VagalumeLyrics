@@ -1,5 +1,6 @@
-package fbo.costa.vagalumelyrics.data
+package fbo.costa.vagalumelyrics.data.repository
 
+import fbo.costa.vagalumelyrics.data.ApiService
 import fbo.costa.vagalumelyrics.model.Image
 import fbo.costa.vagalumelyrics.model.image.ImageEntity
 import fbo.costa.vagalumelyrics.util.EntityMapper
